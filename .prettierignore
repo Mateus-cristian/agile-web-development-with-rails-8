@@ -1,0 +1,3 @@
+*.erb
+*.html.erb
+app/views/**/*.erb

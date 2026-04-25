@@ -1,0 +1,17 @@
+{
+  "files.associations": {
+    "*.html.erb": "erb",
+    "*.erb": "erb"
+  },
+  "[erb]": {
+    "editor.defaultFormatter": "aliariff.vscode-erb-beautify",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false
+  },
+  "emmet.includeLanguages": {
+    "erb": "html"
+  },
+  "prettier.disableLanguages": [
+    "erb"
+  ]
+}
