@@ -1,8 +1,5 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy ]
-  has_one_attached :image
-
-  after_commit -> { broadcast_refresh_later_to "products" }
 
   # GET /products or /products.json
   def index
