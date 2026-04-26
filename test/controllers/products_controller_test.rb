@@ -56,10 +56,10 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy product" do
-    assert_raises ActiveRecord::RecordNotDestroyed do
-      delete product_url(products(:two))
-    end
+    delete product_url(products(:two))
 
     assert Product.exists?(products(:two).id)
+    assert_redirected_to products_url
+    assert_equal "Cannot delete product while it is in a cart", flash[:notice]
   end
 end

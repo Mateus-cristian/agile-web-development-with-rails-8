@@ -2,7 +2,8 @@ require "test_helper"
 
 class CartsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @cart = carts(:one)
+    post line_items_url, params: { product_id: products(:pragprog).id }
+    @cart = Cart.find(session[:cart_id])
   end
 
   test "should get index" do
@@ -38,10 +39,16 @@ class CartsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to cart_url(@cart)
   end
 
-  test "should destroy cart" do
-    post line_items_url, params: { product_id: products(:pragprog).id }
-    @cart = Cart.find(session[:cart_id])
+  test "should redirect when accessing another cart" do
+    other_cart = carts(:one)
+    other_cart = carts(:two) if other_cart.id == @cart.id
 
+    get cart_url(other_cart)
+    assert_redirected_to store_index_url
+    assert_equal "Invalid cart access", flash[:notice]
+  end
+
+  test "should destroy cart" do
     assert_difference("Cart.count", -1) do
       delete cart_url(@cart)
     end

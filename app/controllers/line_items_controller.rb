@@ -2,6 +2,7 @@ class LineItemsController < ApplicationController
   include CurrentCart
   before_action :set_cart, only: %i[ create ]
   before_action :set_line_item, only: %i[ show edit update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_item
 
   # GET /line_items or /line_items.json
   def index
@@ -54,11 +55,11 @@ class LineItemsController < ApplicationController
 
   # DELETE /line_items/1 or /line_items/1.json
   def destroy
+    cart = @line_item.cart
     @line_item.destroy!
 
     respond_to do |format|
-      format.html {
- redirect_to line_items_path, notice: "Line item was successfully destroyed.", status: :see_other }
+      format.html { redirect_to cart, notice: "Item was removed from your cart.", status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -72,5 +73,9 @@ class LineItemsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def line_item_params
       params.expect(line_item: [ :product_id ])
+    end
+
+    def invalid_item
+      redirect_to store_index_url, notice: "Invalid product or line item"
     end
 end

@@ -3,7 +3,7 @@ class CartsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
   # GET /carts or /carts.json
   def index
-    @carts = Cart.all
+    @carts = Cart.where(id: session[:cart_id])
   end
 
   # GET /carts/1 or /carts/1.json
@@ -50,8 +50,7 @@ class CartsController < ApplicationController
 
   # DELETE /carts/1 or /carts/1.json
   def destroy
-    @cart.destroy! if @cart.id == session[:cart_id]
-
+    @cart.destroy!
     session[:cart_id] = nil
 
     respond_to do |format|
@@ -65,6 +64,7 @@ class CartsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_cart
       @cart = Cart.find(params.expect(:id))
+      raise ActiveRecord::RecordNotFound if @cart.id != session[:cart_id]
     end
 
     # Only allow a list of trusted parameters through.
@@ -74,6 +74,6 @@ class CartsController < ApplicationController
 
     def invalid_cart
       logger.error "Attempt to access invalid cart #{params[:id]}"
-      redirect_to store_index_url, notice: "Invalid cart"
+      redirect_to store_index_url, notice: "Invalid cart access"
     end
 end

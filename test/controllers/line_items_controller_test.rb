@@ -23,6 +23,7 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_select "h2", "Your Cart"
     assert_select "td", "The Pragmatic Programmer"
+    assert_select "button", "Remove"
   end
 
   test "should reset store counter when adding line item" do
@@ -53,10 +54,12 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy line_item" do
+    cart = @line_item.cart
+
     assert_difference("LineItem.count", -1) do
       delete line_item_url(@line_item)
     end
 
-    assert_redirected_to line_items_url
+    assert_redirected_to cart_url(cart)
   end
 end
