@@ -9,4 +9,11 @@ class StoreControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", "The Pragmatic Programmer"
     assert_select "div", /\$[,\d]+\.\d\d/
   end
+
+  test "should show visit counter after five visits" do
+    6.times { get store_index_url }
+
+    assert_response :success
+    assert_select "p", /You visited this page 6 times/
+  end
 end

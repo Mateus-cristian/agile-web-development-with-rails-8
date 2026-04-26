@@ -25,6 +25,17 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select "td", "The Pragmatic Programmer"
   end
 
+  test "should reset store counter when adding line item" do
+    6.times { get store_index_url }
+    assert_select "p", /You visited this page 6 times/
+
+    post line_items_url, params: { product_id: products(:pragprog).id }
+    follow_redirect!
+
+    get store_index_url
+    assert_select "p", text: /You visited this page/, count: 0
+  end
+
   test "should show line_item" do
     get line_item_url(@line_item)
     assert_response :success
