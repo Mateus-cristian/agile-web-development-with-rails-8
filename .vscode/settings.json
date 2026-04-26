@@ -8,6 +8,10 @@
     "editor.formatOnSave": true,
     "editor.formatOnPaste": false
   },
+  "[ruby]": {
+    "editor.defaultFormatter": "rubocop.vscode-rubocop",
+    "editor.formatOnSave": true
+  },
   "emmet.includeLanguages": {
     "erb": "html"
   },

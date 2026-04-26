@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "aliariff.vscode-erb-beautify",
-    "SarahRidge.vscode-ruby-syntax"
+    "SarahRidge.vscode-ruby-syntax",
+    "rubocop.vscode-rubocop"
   ]
 }
